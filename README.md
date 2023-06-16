@@ -24,6 +24,15 @@ get_year <- function(x)
 }
 
 
+### GET DOWNLOAD URLS 
+
+URL <- "https://www.irs.gov/charities-non-profits/form-990-series-downloads"
+pg <- read_html(URL)
+
+links <- html_attr( html_nodes( pg, "a" ), "href" )
+xml.zip <- grep( 'https://apps\\.irs\\.gov/pub/epostcard/990/xml.{1,70}zip', links, value = TRUE )
+index.csv <-   grep( 'https://apps\\.irs\\.gov/pub/epostcard/990/xml.{1,70}\\.csv', links, value = TRUE )
+
 # DIRECTORY SETUP:
 # CREATE ONE FOLDER PER YEAR
 
@@ -35,17 +44,7 @@ xml.zip %>%
   unique() %>% 
   lapply( dir.create )
 
-
-### GET DOWNLOAD URLS 
-
-URL <- "https://www.irs.gov/charities-non-profits/form-990-series-downloads"
-pg <- read_html(URL)
-
-links <- html_attr( html_nodes( pg, "a" ), "href" )
-xml.zip <- grep( 'https://apps\\.irs\\.gov/pub/epostcard/990/xml.{1,70}zip', links, value = TRUE )
-index.csv <-   grep( 'https://apps\\.irs\\.gov/pub/epostcard/990/xml.{1,70}\\.csv', links, value = TRUE )
-
-
+  
 ### DOWNLOAD INDEX FILES
 
 for( i in index.csv )
@@ -55,7 +54,7 @@ for( i in index.csv )
 }
 
 
-### DOWNLOAD XML ZIPPED FILES
+### DOWNLOAD XML FILES
 ### AND UNZIP
 
 for( i in xml.zip )
