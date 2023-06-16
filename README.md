@@ -62,9 +62,11 @@ for( i in xml.zip )
 {
   fn <- get_filename(i)
   yyyy <- get_year( xml.zip[1] )
-  filepath <- paste0( yyyy, "/", fn )
-  download.file( i, filepath )
-  unzip( filepath )
+
+  setwd( yyyy )
+  try( download.file( i, fn ) )
+  try( unzip( fn ) )
+  setwd("..")
 }
 ```
 
