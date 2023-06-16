@@ -60,8 +60,8 @@ for( i in index.csv )
 
 for( i in xml.zip )
 {
-  fn <- get_filename(i)
-  yyyy <- get_year( xml.zip[1] )
+  fn <- get_filename( i )
+  yyyy <- get_year( i )
 
   setwd( yyyy )
   try( download.file( i, fn ) )
