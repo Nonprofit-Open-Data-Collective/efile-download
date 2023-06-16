@@ -29,6 +29,12 @@ get_filename <- function(x)
   tail(1)
 }
 
+get_filenames <- function( urls )
+{
+  fns <- sapply( urls, get_filename )
+  return( fns )
+}
+
 get_year <- function(x)
 {
   xml.year <- microseq::gregexpr( 'xml/[0-9]{4}/', x, extract = TRUE ) %>% unlist()
@@ -158,7 +164,7 @@ fail_report( failed.paths )
 retry_dluz <- function( urls )
 {
   sapply( urls, download_xml )
-  f2 <- sapply( urls.xml, unzip_w_err_handle )
+  f2 <- sapply( urls, unzip_w_err_handle )
   return( f2 )
 }
 
@@ -183,7 +189,7 @@ DOWNLOAD_ALL_EFILE <- function( URL="https://www.irs.gov/charities-non-profits/f
   fail_report( fails )
   
   year <- get_year( url )
-  fn   <- get_filename( url )
+  fn   <- get_filenames( url )
   fp   <- paste0( year, "/", fn )
   failed.twice <- retry_dluz( urls.xml[ fp %in% fails ] )
   
